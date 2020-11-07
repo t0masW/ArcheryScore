@@ -1,40 +1,41 @@
-# Archery Scoring APP
-
-def CurrentRoundScoring(ArrowNumber, NumberOfXs, NumberOfMisses):
-    score = list(map(str, input("\nEnter the scores separated by space : ").strip().split()))
-    list(score)
-
-    for i in range(len(score)):
-        if score[i] == 'x':
-            NumberOfXs = NumberOfXs + 1
-            score[i] = int(10)
-    for i in range(len(score)):
-        if score[i] == 'm':
-            score[i] = int(0)
-            NumberOfMisses = NumberOfMisses + 1
-
-    if len(score) > ArrowNumber:
-        print("\nThere is an ERROR with the score please redo this rounds scores!!!")
-        CurrentRoundScoring(ArrowNumber, NumberOfXs, NumberOfMisses)
-    else:
-        return score, NumberOfXs, NumberOfMisses
+# By Tomas Williams
+# Archery Score Recorder
+# Last Updated 7/11/20
+import tabulate
 
 
-def CurrentScore(RoundScore, Score):
-    for i in range(len(RoundScore)):
-        Score = Score + int(RoundScore[i])
-    return Score
+class Game:
+    def __init__(self, numberOfRounds: int, arrowsPerRound: int):
+        self.roundNums = numberOfRounds
+        self.arrows = arrowsPerRound
+        self.HEADER = ['ROUND', [f'Arrow {i}' for i in range(self.arrows)], 'Round Score', 'Running Total', 'Xs']
+        self.table = []
+        self.runningScore = 0
+        self.roundScore = []
+        self.outputTable()
+
+    def currentRound(self) -> list:
+        currentRoundScore = []
+        for i in range(self.arrows):
+            print('''
+            [*] Scoring
+            If the arrow was a miss input "m"
+            If the arrow was an X input "x"
+            ''')
+            hit = input('Arrow Score: ')
+            if hit.lower() == 'm':
+                currentRoundScore.append(str('M'))
+            elif hit.lower() == 'x':
+                currentRoundScore.append(str('X'))
+            else:
+                currentRoundScore.append(int(hit))
+        return currentRoundScore
+
+    def outputTable(self):
+        print(tabulate.tabulate(self.table, self.HEADER, tablefmt='grid'))
 
 
 if __name__ == '__main__':
-    ArrowNumber = int(input("How many ARROWS are you shooting?:  "))
-    RoundNumber = int(input("\nHow many ROUNDS are you shooting?:  "))
-    NumberOfXs = 0
-    NumberOfMisses = 0
-    Score = 0
-    for i in range(RoundNumber):
-        RoundScore, NumberOfXs, NumberOfMisses = CurrentRoundScoring(ArrowNumber, NumberOfXs, NumberOfMisses)
-        Score = CurrentScore(RoundScore, Score)
-        print("Your score so far is", Score)
-        print("you've missed", NumberOfMisses, "times")
-        print("You've hit the X", NumberOfXs, "times")
+    number_of_rounds = int(input('How many rounds are you shooting: '))
+    arrows_per_round = int(input('How many arrows are you shooting each round: '))
+    Game(number_of_rounds, arrows_per_round)
