@@ -1,14 +1,14 @@
 # By Tomas Williams
 # Archery Score Recorder
 # Last Updated 7/11/20
-import tabulate
+from tabulate import tabulate
 
 
 class Game:
     def __init__(self, numberOfRounds: int, arrowsPerRound: int):
         self.roundNums = numberOfRounds
         self.arrows = arrowsPerRound
-        self.HEADER = ['ROUND', [f'Arrow {i}' for i in range(self.arrows)], 'Round Score', 'Running Total', 'Xs']
+        self.HEADER = ['ROUND']+[f'Arrow {i}' for i in range(1,self.arrows+1)]+['Round Score', 'Running Total', 'Xs']
         self.table = []
         self.runningScore = 0
         self.roundScore = []
@@ -32,7 +32,7 @@ class Game:
         return currentRoundScore
 
     def outputTable(self):
-        print(tabulate.tabulate(self.table, self.HEADER, tablefmt='grid'))
+        print(tabulate(self.table, self.HEADER, tablefmt='grid'))
 
 
 if __name__ == '__main__':
