@@ -16,22 +16,12 @@ class Game:
         self.roundScores = []
         self.runningScore = 0
         self.currentRound()
+        self.formatTable()
         self.outputTable()
 
     def currentRound(self):
-        for i in range(self.roundNums):
+        for _ in range(self.roundNums):
             self.roundScores.append(self.collectArrows())
-        for i in range(len(self.roundScores)):
-            for score in range(len(self.roundScores[i])):
-                if self.roundScores[i][score] == 'X':
-                    self.runningScore += 10
-                elif self.roundScores[i][score] == 'M':
-                    pass
-                else:
-                    self.runningScore += int(self.roundScores[i][score])
-        # if 'X' in self.roundScores:
-        #     for i in range(len(self.roundScores)):
-        #         if i == 'X':
 
     def collectArrows(self) -> list:
         currentRoundScore = []
@@ -64,6 +54,22 @@ class Game:
                 arrows += 1
         self.round += 1
         return currentRoundScore
+
+    def formatTable(self):
+        print('rounscore 2'+ str(self.roundScores))
+        for i in range(len(self.roundScores[0:])):
+            roundScore = 0
+            for j in range(1,len(self.roundScores[i])):
+                print(self.roundScores[i][j])
+                if self.roundScores[i][j] == 'M':
+                    pass
+                elif self.roundScores[i][j] == 'X':
+                    roundScore += 10
+                else:
+                    roundScore += int(self.roundScores[i][j])
+            self.runningScore += roundScore
+            self.roundScores[i].append(roundScore)
+            self.roundScores[i].append(self.runningScore)
 
     def outputTable(self):
         for i in self.roundScores:
