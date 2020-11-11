@@ -1,6 +1,7 @@
 # By Tomas Williams
 # Archery Score Recorder
 # Last Updated 7/11/20
+import sys
 from tabulate import tabulate
 
 
@@ -8,31 +9,67 @@ class Game:
     def __init__(self, numberOfRounds: int, arrowsPerRound: int):
         self.roundNums = numberOfRounds
         self.arrows = arrowsPerRound
-        self.HEADER = ['ROUND']+[f'Arrow {i}' for i in range(1,self.arrows+1)]+['Round Score', 'Running Total', 'Xs']
+        self.HEADER = ['ROUND'] + [f'Arrow {i}' for i in range(1, self.arrows + 1)] + ['Round Score',
+                                                                                       'Running Total', 'No. of Xs']
         self.table = []
+        self.round = 1
+        self.roundScores = []
         self.runningScore = 0
-        self.roundScore = []
+        self.currentRound()
         self.outputTable()
 
-    def currentRound(self) -> list:
+    def currentRound(self):
+        for i in range(self.roundNums):
+            self.roundScores.append(self.collectArrows())
+        for i in range(len(self.roundScores)):
+            for score in range(len(self.roundScores[i])):
+                if self.roundScores[i][score] == 'X':
+                    self.runningScore += 10
+                elif self.roundScores[i][score] == 'M':
+                    pass
+                else:
+                    self.runningScore += int(self.roundScores[i][score])
+        # if 'X' in self.roundScores:
+        #     for i in range(len(self.roundScores)):
+        #         if i == 'X':
+
+    def collectArrows(self) -> list:
         currentRoundScore = []
-        for i in range(self.arrows):
-            print('''
-            [*] Scoring
+        currentRoundScore.insert(0, self.round)
+        allowed = ['1','2','3','4','5','6','7','8','9','10','x','m']
+        arrows = 1
+        print(f'''
+            [*] Scoring Round {self.round}
+            
             If the arrow was a miss input "m"
             If the arrow was an X input "x"
             ''')
-            hit = input('Arrow Score: ')
-            if hit.lower() == 'm':
+        while arrows != self.arrows + 1:
+            hit = input(f'Arrow {arrows} Score: ')
+            if hit =='' or hit not in allowed:
+                print('''
+            Error
+            PLEASE ENTER A NUMBER
+            YOUR INPUT HAS NOT BEEN ADDED
+                ''')
+                continue
+            elif hit.lower() == 'm':
                 currentRoundScore.append(str('M'))
+                arrows += 1
             elif hit.lower() == 'x':
                 currentRoundScore.append(str('X'))
+                arrows += 1
             else:
-                currentRoundScore.append(int(hit))
+                currentRoundScore.append(hit)
+                arrows += 1
+        self.round += 1
         return currentRoundScore
 
     def outputTable(self):
-        print(tabulate(self.table, self.HEADER, tablefmt='grid'))
+        for i in self.roundScores:
+            self.table.append(i)
+        print('\n')
+        print(tabulate(self.table, self.HEADER, tablefmt='grid', stralign='right'))
 
 
 if __name__ == '__main__':
