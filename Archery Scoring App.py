@@ -2,6 +2,7 @@
 # Archery Score Recorder
 # Last Updated 7/11/20
 from tabulate import tabulate
+import time
 
 
 class Game:
@@ -73,11 +74,12 @@ class Game:
     def outputTable(self):
         for i in self.roundScores:
             self.table.append(i)
-        print('\n')
-        print(tabulate(self.table, self.HEADER, tablefmt='grid', stralign='right'))
+        print('\n' + tabulate(self.table, self.HEADER, tablefmt='grid') + '\n')
 
 
+start = time.time()
 if __name__ == '__main__':
     number_of_rounds = int(input('How many rounds are you shooting: '))
     arrows_per_round = int(input('How many arrows are you shooting each round: '))
     Game(number_of_rounds, arrows_per_round)
+    print('Runtime: '+ str(time.time() - start)[:4] + ' Seconds')
