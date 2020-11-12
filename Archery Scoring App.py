@@ -1,7 +1,6 @@
 # By Tomas Williams
 # Archery Score Recorder
 # Last Updated 7/11/20
-import sys
 from tabulate import tabulate
 
 
@@ -26,7 +25,7 @@ class Game:
     def collectArrows(self) -> list:
         currentRoundScore = []
         currentRoundScore.insert(0, self.round)
-        allowed = ['1','2','3','4','5','6','7','8','9','10','x','m']
+        allowed = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'x', 'm']
         arrows = 1
         print(f'''
             [*] Scoring Round {self.round}
@@ -36,7 +35,7 @@ class Game:
             ''')
         while arrows != self.arrows + 1:
             hit = input(f'Arrow {arrows} Score: ')
-            if hit =='' or hit not in allowed:
+            if hit == '' or hit not in allowed:
                 print('''
             Error
             PLEASE ENTER A NUMBER
@@ -56,10 +55,10 @@ class Game:
         return currentRoundScore
 
     def formatTable(self):
-        print('rounscore 2'+ str(self.roundScores))
+        print('rounscore 2' + str(self.roundScores))
         for i in range(len(self.roundScores[0:])):
             roundScore = 0
-            for j in range(1,len(self.roundScores[i])):
+            for j in range(1, len(self.roundScores[i])):
                 print(self.roundScores[i][j])
                 if self.roundScores[i][j] == 'M':
                     pass
