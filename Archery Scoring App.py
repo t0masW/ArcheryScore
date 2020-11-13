@@ -59,17 +59,20 @@ class Game:
         print('rounscore 2' + str(self.roundScores))
         for i in range(len(self.roundScores[0:])):
             roundScore = 0
+            number_of_Xs = 0
             for j in range(1, len(self.roundScores[i])):
                 print(self.roundScores[i][j])
                 if self.roundScores[i][j] == 'M':
                     pass
                 elif self.roundScores[i][j] == 'X':
                     roundScore += 10
+                    number_of_Xs += 1
                 else:
                     roundScore += int(self.roundScores[i][j])
             self.runningScore += roundScore
             self.roundScores[i].append(roundScore)
             self.roundScores[i].append(self.runningScore)
+            self.roundScores[i].append(number_of_Xs)
 
     def outputTable(self):
         for i in self.roundScores:
@@ -82,4 +85,4 @@ if __name__ == '__main__':
     number_of_rounds = int(input('How many rounds are you shooting: '))
     arrows_per_round = int(input('How many arrows are you shooting each round: '))
     Game(number_of_rounds, arrows_per_round)
-    print('Runtime: '+ str(time.time() - start)[:4] + ' Seconds')
+    print('Runtime: ' + str(time.time() - start)[:4] + ' Seconds')
